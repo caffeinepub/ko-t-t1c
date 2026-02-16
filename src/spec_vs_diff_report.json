@@ -1,0 +1,92 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-16T23:23:52.099Z",
+  "summary": "The diff implements a dark neon-themed multi-view UI (landing/generate/history), an image picker with validation and preview metadata, on-device variation generation via canvas filters, hide/restore/regenerate UI for variations, and localStorage-based history. However, the landing manifesto content and required static branding images are not evidenced, and the variation pipeline does not clearly meet the “background variation” aspect. Several unrequested features/links were added (e.g., caffeine.ai footer link, backend enumeration of all users with history).",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Create a landing/intro experience that displays the full provided introduction/manifesto text and the provided tagline exactly as written (including the Louis Vuitton URL).",
+      "reason": "The diff summary does not include the LandingIntro page content, so there is no evidence that the exact title/tagline/full manifesto text (including https://www.louisvuitton.com) is rendered in the UI.",
+      "evidence": [
+        "frontend/src/App.tsx (references LandingIntro but does not show content)",
+        "frontend/src/pages/LandingIntro (not present in diff summary)"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Generate multiple realistic variations that preserve the subject while varying only background and/or overall styling (minimum 4), with larger view and download.",
+      "reason": "On-device generation shown applies global pixel adjustments (temperature/brightness/contrast/saturation), vignette, grain, and full-image blur; there is no evidence of background-only changes (segmentation/masking) or explicit background variation. Also, the UI that enforces minimum 4 and configurable count is not evidenced (UploadAndGenerate page not shown).",
+      "evidence": [
+        "frontend/src/lib/onDeviceVariations.ts (global canvas filter pipeline; no masking/background replacement shown)",
+        "frontend/src/pages/UploadAndGenerate (not present in diff summary)",
+        "frontend/src/components/VariationGrid.tsx (download/view exists, but generation count controls not evidenced)"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Include the user-provided Ko T T1c images as static frontend assets and use them visibly in the UI (at least one on the landing screen), served from frontend static assets (not via backend).",
+      "reason": "No static image assets or references to the required filenames are shown in the provided diff summary, and LandingIntro implementation is not visible to confirm placement.",
+      "evidence": [
+        "frontend/src/pages/LandingIntro (not present in diff summary)",
+        "No evidence in shown files of references to: ko-tt1c-app-icon.dim_512x512.png, ko-tt1c-hero-bg.dim_1600x900.png, ko-tt1c-favicon.dim_64x64.png"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Footer includes an outbound marketing/referral link to caffeine.ai with UTM parameters.",
+      "reason": "Not requested in any requirement and adds external branding/linking behavior.",
+      "evidence": [
+        "frontend/src/components/AppLayout.tsx"
+      ]
+    },
+    {
+      "description": "Backend exposes a query to list all user principals with history (getAllUsersWithHistory).",
+      "reason": "REQ-5 only requires a user to revisit their own history; enumerating all users is not requested and may be privacy-sensitive.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Internet Identity authentication plumbing/hooks were added (InternetIdentityProvider/useInternetIdentity/useActor) even though authentication was not requested.",
+      "reason": "BuildRequest explicitly notes third-party auth is a non-goal and only mentions II as a possibility if later requested; current requirements do not require login/auth to satisfy the described UX.",
+      "evidence": [
+        "frontend/src/main.tsx",
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/hooks/useActor.ts"
+      ]
+    }
+  ],
+  "confidence": 0.66,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AppLayout.tsx",
+    "frontend/src/components/HiddenVariationsPanel.tsx",
+    "frontend/src/components/HistoryDetail.tsx",
+    "frontend/src/components/ImageFilePicker.tsx",
+    "frontend/src/components/TopNav.tsx",
+    "frontend/src/components/VariationGrid.tsx",
+    "frontend/src/components/VariationViewerDialog.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/historyStorage.ts",
+    "frontend/src/lib/imageMeta.ts",
+    "frontend/src/lib/onDeviceVariations.ts",
+    "frontend/src/lib/variationPresets.ts",
+    "frontend/src/lib/variationState.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/History.tsx",
+    "frontend/src/pages/LandingIntro.tsx",
+    "frontend/src/pages/UploadAndGenerate.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-landing-intro-experience-for-ko-t-t1c-the-chaos-that-finally-makes-sense-that-displays-the-full-provided-introduction-manifesto-text-and-the-provided-tagline-exactly-as-written-in-english-within-the-app-ui",
+      "featureTitle": "Create a landing/intro experience for “Ko T T1C — The Chaos That Finally Makes Sense” that displays the full provided introduction/manifesto text and the provided tagline exactly as written, in English, within the app UI.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/TopNav.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-photo-submission-flow-where-a-user-can-upload-a-single-photo-jpg-png-and-preview-it-before-generating-variations",
+      "featureTitle": "Implement a photo submission flow where a user can upload a single photo (JPG/PNG) and preview it before generating variations.",
+      "files": [
+        "frontend/src/components/ImageFilePicker.tsx",
+        "frontend/src/lib/imageMeta.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-generate-multiple-variations-from-the-uploaded-photo-that-preserve-the-original-person-identity-i-e-do-not-alter-facial-features-body-identity-while-varying-only-background-and-or-overall-styling-in-a-realistic-high-quality-manner-using-an-on-device-image-processing-pipeline-no-external-ai-services",
+      "featureTitle": "Generate multiple “variations” from the uploaded photo that preserve the original person/identity (i.e., do not alter facial features/body identity) while varying only background and/or overall styling in a realistic, high-quality manner using an on-device image processing pipeline (no external AI services).",
+      "files": [
+        "frontend/src/components/VariationGrid.tsx",
+        "frontend/src/components/VariationViewerDialog.tsx",
+        "frontend/src/lib/onDeviceVariations.ts",
+        "frontend/src/lib/variationPresets.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-quality-guard-ux-for-outputs-allow-the-user-to-flag-a-generated-variation-as-bad-distorted-hide-it-from-the-main-grid-and-regenerate-a-replacement-variation-using-a-different-preset",
+      "featureTitle": "Add a “quality guard” UX for outputs: allow the user to flag a generated variation as “bad/distorted,” hide it from the main grid, and regenerate a replacement variation using a different preset.",
+      "files": [
+        "frontend/src/components/HiddenVariationsPanel.tsx",
+        "frontend/src/components/VariationGrid.tsx",
+        "frontend/src/lib/variationState.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-persist-a-lightweight-history-of-user-submissions-original-generated-variations-timestamps-so-a-user-can-revisit-previous-sessions-from-within-the-app",
+      "featureTitle": "Persist a lightweight history of user submissions (original + generated variations + timestamps) so a user can revisit previous sessions from within the app.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/HistoryDetail.tsx",
+        "frontend/src/lib/historyStorage.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-choose-and-apply-a-coherent-visual-theme-for-ko-t-t1c-and-enforce-it-consistently-across-the-landing-upload-generation-and-history-views",
+      "featureTitle": "Choose and apply a coherent visual theme for Ko T T1c and enforce it consistently across the landing, upload, generation, and history views.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-static-branding-imagery-to-the-ui-by-including-the-user-provided-ko-t-t1c-images-as-visible-brand-elements-e-g-hero-cover-and-or-logo-placement-without-requiring-backend-image-routing",
+      "featureTitle": "Add static branding imagery to the UI by including the user-provided Ko T T1c images as visible brand elements (e.g., hero/cover and/or logo placement) without requiring backend image routing.",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/components/TopNav.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

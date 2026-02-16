@@ -1,0 +1,165 @@
+{
+  "kind": "build_request",
+  "title": "Ko T T1c photo upload + realistic variation gallery with manifesto intro",
+  "projectName": "Ko T T1c",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a landing/intro experience for “Ko T T1C — The Chaos That Finally Makes Sense” that displays the full provided introduction/manifesto text and the provided tagline exactly as written, in English, within the app UI.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "it's going to have this introduction in full: Ko T T1C — The Chaos That Finally Makes Sense ... Tagline:\nKo T T1C — Chaotic day. Common‑sense drip. Believe in yourself when nobody’s passing you the baton."
+        ]
+      },
+      "acceptanceCriteria": [
+        "The landing/intro screen shows the title “Ko T T1C — The Chaos That Finally Makes Sense”.",
+        "The full manifesto text is present (not truncated) and readable on mobile and desktop.",
+        "The tagline text appears exactly as provided.",
+        "The Louis Vuitton URL (https://www.louisvuitton.com) appears correctly in the rendered text."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement a photo submission flow where a user can upload a single photo (JPG/PNG) and preview it before generating variations.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "It's an app where people can submit a photo"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can select a JPG/PNG file from their device.",
+        "The selected image renders as a preview with filename and basic info (e.g., dimensions/size if available).",
+        "The UI validates file type and enforces a clear max file size limit with a user-friendly error message when exceeded.",
+        "User can remove/replace the selected photo before generating."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Generate multiple “variations” from the uploaded photo that preserve the original person/identity (i.e., do not alter facial features/body identity) while varying only background and/or overall styling in a realistic, high-quality manner using an on-device image processing pipeline (no external AI services).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "it will always stay true to their upload though so like it will keep the same model like whatever person is in their photograph",
+          "give variations on the outfit or the background and always within a realistic manner very quality work not sloppy and third leg type stuff"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The app can produce a configurable number of variations (minimum 4) from one uploaded image.",
+        "Variations keep the original photo’s subject unchanged (no face/body warping; no added limbs).",
+        "Variations change background and/or photographic styling (e.g., color grade, lighting, depth-of-field effects) while keeping output realistic and non-cartoonish.",
+        "Each generated variation is displayed as an image the user can open in a larger view and download."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Add a “quality guard” UX for outputs: allow the user to flag a generated variation as “bad/distorted,” hide it from the main grid, and regenerate a replacement variation using a different preset.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "very quality work not sloppy and third leg type stuff"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each variation card includes an action to mark it as bad/hidden.",
+        "Hidden variations are not shown in the default grid but can be viewed/restored from a “Hidden” section.",
+        "User can regenerate a replacement variation for a hidden/bad item.",
+        "Regeneration produces a different preset result than the hidden item (not a duplicate)."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Persist a lightweight history of user submissions (original + generated variations + timestamps) so a user can revisit previous sessions from within the app.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "It's an app where people can submit a photo and it will give them variations"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A “History” view lists prior submissions with a thumbnail and created time.",
+        "Selecting a history item shows the original image and its variations.",
+        "History persists across page refreshes (at minimum via frontend local persistence; backend persistence may be added if size limits allow)."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Choose and apply a coherent visual theme for Ko T T1c and enforce it consistently across the landing, upload, generation, and history views.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Theme is consistently applied (colors, typography, spacing, buttons, cards).",
+        "Theme aligns with the brand vibe suggested by the provided Ko T T1c imagery (neon/chaos couture feel) without defaulting to a generic look.",
+        "All text remains readable with accessible contrast on both desktop and mobile."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add static branding imagery to the UI by including the user-provided Ko T T1c images as visible brand elements (e.g., hero/cover and/or logo placement) without requiring backend image routing.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "The user has uploaded 2 image(s): 1770656359337.png, 1770656359337-1.png."
+        ]
+      },
+      "acceptanceCriteria": [
+        "The two uploaded images are included in the frontend as static assets and used in the UI (at least one visible on the landing screen).",
+        "Images are served from the frontend static assets path (not fetched through the backend canister).",
+        "Layout remains responsive and does not cause overflow or unreadable text."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not use or integrate external AI/LLM/image-generation services (no OpenAI/Anthropic/third-party AI APIs).",
+    "Backend must remain a single Motoko actor (all logic in backend main actor).",
+    "Do not modify frontend files under the immutable paths listed in SYSTEM_CONTEXT (compose read-only UI components instead).",
+    "Use English for any user-facing text."
+  ],
+  "nonGoals": [
+    "Implementing true AI identity-preserving outfit generation (photorealistic wardrobe changes) via external model inference.",
+    "Third-party authentication providers (use Internet Identity only if authentication is later requested).",
+    "Real-time collaboration or chat features."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Neon couture-style app icon on dark background (ko-tt1c-app-icon.dim_512x512.png)",
+      "Neon couture-style wide hero background with abstract light leaks and subtle flame motifs (ko-tt1c-hero-bg.dim_1600x900.png)",
+      "Minimal neon mark/favicon variant on dark background (ko-tt1c-favicon.dim_64x64.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

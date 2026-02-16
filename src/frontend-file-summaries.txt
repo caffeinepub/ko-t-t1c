@@ -1,0 +1,22 @@
+{
+  "frontend/src/App.tsx": "Main application component managing view state (landing, generate, history) with theme provider and toast notifications.",
+  "frontend/src/components/AppLayout.tsx": "Layout wrapper providing consistent header navigation and footer with caffeine.ai attribution across all views.",
+  "frontend/src/components/TopNav.tsx": "Sticky navigation header with Ko T T1C branding and view navigation buttons.",
+  "frontend/src/pages/LandingIntro.tsx": "Landing page displaying the complete Ko T T1C manifesto, poetry, tagline, and brand imagery with call-to-action.",
+  "frontend/src/pages/UploadAndGenerate.tsx": "Main generation view handling image upload, variation count selection, generation controls, and results display with tabs for visible/hidden variations.",
+  "frontend/src/pages/History.tsx": "History view listing all past submissions with thumbnails and timestamps, supporting detail view and clear all functionality.",
+  "frontend/src/components/ImageFilePicker.tsx": "Reusable image upload component with drag-drop UI, file validation (type/size), preview, and metadata display.",
+  "frontend/src/components/VariationGrid.tsx": "Responsive grid displaying generated variations with hover actions (view, download, hide) and dialog integration.",
+  "frontend/src/components/VariationViewerDialog.tsx": "Modal dialog for viewing variations in larger size with download action.",
+  "frontend/src/components/HiddenVariationsPanel.tsx": "Panel displaying hidden variations with restore and regenerate actions.",
+  "frontend/src/components/HistoryDetail.tsx": "Detail view for a history entry showing original image and all generated variations.",
+  "frontend/src/lib/imageMeta.ts": "Utility functions to extract image metadata (dimensions, file size) from uploaded files.",
+  "frontend/src/lib/variationPresets.ts": "Defines 12 photographic style presets with parameters for brightness, contrast, saturation, vignette, grain, blur, and temperature.",
+  "frontend/src/lib/onDeviceVariations.ts": "On-device image processing pipeline using Canvas API to apply preset-based variations without external AI services.",
+  "frontend/src/lib/variationState.ts": "TypeScript interface for variation items tracking ID, image URL, preset ID, and preset name.",
+  "frontend/src/lib/historyStorage.ts": "LocalStorage-based persistence for submission history with add, get, and clear operations.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for backend integration (getHistory, addSubmission, clearHistory) with proper invalidation.",
+  "frontend/src/index.css": "Global styles with OKLCH color system, neon color palette (pink/purple/cyan), and custom utility classes for neon glow effects.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with neon color tokens, custom shadows, and Inter font family.",
+  "frontend/index.html": "HTML entry point with favicon, meta tags, and Ko T T1C branding."
+}

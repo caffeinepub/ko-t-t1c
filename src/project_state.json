@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Ko T T1c: an app where users upload a photo and receive high-quality, realistic image variations that preserve the original person/identity while changing elements like outfit and background; app includes a full branded introduction/manifesto and tagline.",
+  "architectural_notes": [
+    "Image generation must preserve the subject identity from the uploaded photo while modifying only allowed attributes (e.g., outfit/background) in a realistic style."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Neon couture-style app icon on dark background (ko-tt1c-app-icon.dim_512x512.png)\n- Neon couture-style wide hero background with abstract light leaks and subtle flame motifs (ko-tt1c-hero-bg.dim_1600x900.png)\n- Minimal neon mark/favicon variant on dark background (ko-tt1c-favicon.dim_64x64.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-a-landing-intro-experience-for-ko-t-t1c-the-chaos-that-finally-makes-sense-that-displays-the-full-provided-introduction-manifesto-text-and-the-provided-tagline-exactly-as-written-in-english-within-the-app-ui",
+      "title": "Create a landing/intro experience for “Ko T T1C — The Chaos That Finally Makes Sense” that displays the full provided introduction/manifesto text and the provided tagline exactly as written, in English, within the app UI.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-photo-submission-flow-where-a-user-can-upload-a-single-photo-jpg-png-and-preview-it-before-generating-variations",
+      "title": "Implement a photo submission flow where a user can upload a single photo (JPG/PNG) and preview it before generating variations.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-multiple-variations-from-the-uploaded-photo-that-preserve-the-original-person-identity-i-e-do-not-alter-facial-features-body-identity-while-varying-only-background-and-or-overall-styling-in-a-realistic-high-quality-manner-using-an-on-device-image-processing-pipeline-no-external-ai-services",
+      "title": "Generate multiple “variations” from the uploaded photo that preserve the original person/identity (i.e., do not alter facial features/body identity) while varying only background and/or overall styling in a realistic, high-quality manner using an on-device image processing pipeline (no external AI services).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-quality-guard-ux-for-outputs-allow-the-user-to-flag-a-generated-variation-as-bad-distorted-hide-it-from-the-main-grid-and-regenerate-a-replacement-variation-using-a-different-preset",
+      "title": "Add a “quality guard” UX for outputs: allow the user to flag a generated variation as “bad/distorted,” hide it from the main grid, and regenerate a replacement variation using a different preset.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-persist-a-lightweight-history-of-user-submissions-original-generated-variations-timestamps-so-a-user-can-revisit-previous-sessions-from-within-the-app",
+      "title": "Persist a lightweight history of user submissions (original + generated variations + timestamps) so a user can revisit previous sessions from within the app.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-choose-and-apply-a-coherent-visual-theme-for-ko-t-t1c-and-enforce-it-consistently-across-the-landing-upload-generation-and-history-views",
+      "title": "Choose and apply a coherent visual theme for Ko T T1c and enforce it consistently across the landing, upload, generation, and history views.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-static-branding-imagery-to-the-ui-by-including-the-user-provided-ko-t-t1c-images-as-visible-brand-elements-e-g-hero-cover-and-or-logo-placement-without-requiring-backend-image-routing",
+      "title": "Add static branding imagery to the UI by including the user-provided Ko T T1c images as visible brand elements (e.g., hero/cover and/or logo placement) without requiring backend image routing.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Allow users to submit/upload a photo as input for generation",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Generate multiple realistic photo variations that stay true to the uploaded person (preserve identity/model) while varying outfit and/or background",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Quality/safety constraint: outputs must be high quality and realistic; avoid distorted/anatomically incorrect results (e.g., 'third leg' artifacts)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Include the provided full introduction/manifesto text and tagline in the app experience",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Ko T T1c!",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

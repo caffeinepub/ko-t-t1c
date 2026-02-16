@@ -1,0 +1,248 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Ko T T1c — Photo upload + realistic variation gallery with manifesto intro (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Add a landing/intro screen that renders the full Ko T T1C manifesto and tagline exactly as provided (including the Louis Vuitton URL).",
+      "acceptanceCriteria": [
+        "The landing/intro screen shows the title “Ko T T1C — The Chaos That Finally Makes Sense”.",
+        "The full manifesto text is present (not truncated) and readable on mobile and desktop.",
+        "The tagline text appears exactly as provided.",
+        "The Louis Vuitton URL (https://www.louisvuitton.com) appears correctly in the rendered text."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell with navigation and a Landing/Intro view that renders the full manifesto + tagline as exact, copy-pasted English text (including https://www.louisvuitton.com), using responsive layout and readable typography. Use shadcn-ui building blocks (e.g., button/card/dialog where applicable) to keep UI consistent; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/views/LandingIntro.tsx",
+          "operation": "create",
+          "description": "Implement the Landing/Intro view UI with the exact title, full manifesto text (non-truncated), and tagline; ensure long-form text wraps and remains readable on mobile/desktop. Use shadcn-ui components for structured layout (e.g., Card) as needed; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/TopNav.tsx",
+          "operation": "create",
+          "description": "Create a simple top navigation used by App to reach Landing, Upload/Generate, and History views without adding extra routes beyond what the request needs. Use shadcn-ui components (e.g., Button) for nav actions; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement single-photo (JPG/PNG) upload with client-side validation, preview, and replace/remove controls before generation.",
+      "acceptanceCriteria": [
+        "User can select a JPG/PNG file from their device.",
+        "The selected image renders as a preview with filename and basic info (e.g., dimensions/size if available).",
+        "The UI validates file type and enforces a clear max file size limit with a user-friendly error message when exceeded.",
+        "User can remove/replace the selected photo before generating."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/views/UploadAndGenerate.tsx",
+          "operation": "create",
+          "description": "Create the upload UI for a single JPG/PNG, including max file size validation with user-friendly errors, preview rendering, and remove/replace actions before generation. Use shadcn-ui inputs/buttons/cards and (optional) toast messaging for errors; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ImageFilePicker.tsx",
+          "operation": "create",
+          "description": "Create a reusable image picker component that validates type/size, extracts basic metadata (filename, size, and dimensions when available), and emits a preview URL. Use shadcn-ui input/label components for consistent styling; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/lib/imageMeta.ts",
+          "operation": "create",
+          "description": "Add utilities to read image dimensions and format metadata safely in-browser (no external services), supporting JPG/PNG and returning size/dimensions where available."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Generate a configurable set of realistic, identity-preserving variations on-device (no external AI), display them in a gallery with larger view and download.",
+      "acceptanceCriteria": [
+        "The app can produce a configurable number of variations (minimum 4) from one uploaded image.",
+        "Variations keep the original photo’s subject unchanged (no face/body warping; no added limbs).",
+        "Variations change background and/or photographic styling (e.g., color grade, lighting, depth-of-field effects) while keeping output realistic and non-cartoonish.",
+        "Each generated variation is displayed as an image the user can open in a larger view and download."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/variationPresets.ts",
+          "operation": "create",
+          "description": "Define a set of realistic, photography-style presets (e.g., color grade, exposure/contrast curves, subtle film grain, vignette, depth-of-field simulation) that do not warp geometry. Include preset identifiers to support non-duplicate regeneration logic."
+        },
+        {
+          "path": "frontend/src/lib/onDeviceVariations.ts",
+          "operation": "create",
+          "description": "Implement an on-device image processing pipeline using Canvas/Web APIs to render preset-based variations as images (data URLs/blobs). Prefer non-warping operations; optionally use on-device FaceDetector (if available) to keep face region sharp while applying background blur/grade, with safe fallback to whole-image stylization when unavailable."
+        },
+        {
+          "path": "frontend/src/components/VariationGrid.tsx",
+          "operation": "create",
+          "description": "Create a responsive grid that displays generated variations with actions (open, download, mark bad) and status indicators. Use shadcn-ui Card/Button/DropdownMenu (if present) for consistent actions; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/VariationViewerDialog.tsx",
+          "operation": "create",
+          "description": "Add a larger-view modal/dialog for a variation image with download action. Use shadcn-ui Dialog for accessibility and consistent UI; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/views/UploadAndGenerate.tsx",
+          "operation": "modify",
+          "description": "Wire generation controls: choose number of variations (min 4), run on-device processing, render results via VariationGrid, and allow opening a larger view and downloading each variation. Use shadcn-ui controls for number selection and actions; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Add a quality-guard UX to hide/flag distorted outputs and regenerate replacements using a different preset.",
+      "acceptanceCriteria": [
+        "Each variation card includes an action to mark it as bad/hidden.",
+        "Hidden variations are not shown in the default grid but can be viewed/restored from a “Hidden” section.",
+        "User can regenerate a replacement variation for a hidden/bad item.",
+        "Regeneration produces a different preset result than the hidden item (not a duplicate)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/variationState.ts",
+          "operation": "create",
+          "description": "Add state helpers for tracking variation items, their preset IDs, hidden/visible status, and replacement/regeneration while ensuring regenerated items use a different preset than the flagged one."
+        },
+        {
+          "path": "frontend/src/components/VariationGrid.tsx",
+          "operation": "modify",
+          "description": "Add per-card actions to mark a variation as bad/hidden and trigger regeneration. Ensure hidden items are removed from the default grid view and actions are clearly labeled. Use shadcn-ui Button/DropdownMenu for actions where appropriate; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/HiddenVariationsPanel.tsx",
+          "operation": "create",
+          "description": "Create a 'Hidden' section UI to list hidden variations with restore and regenerate actions. Use shadcn-ui Tabs/Accordion/Card (as available) for a clean UX; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/views/UploadAndGenerate.tsx",
+          "operation": "modify",
+          "description": "Wire the HiddenVariationsPanel into the generation screen, connect hide/restore/regenerate actions, and ensure regeneration picks a different preset to avoid duplicates."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Persist a lightweight local history of submissions (original + variations + timestamps) and provide a History view to revisit prior sessions.",
+      "acceptanceCriteria": [
+        "A “History” view lists prior submissions with a thumbnail and created time.",
+        "Selecting a history item shows the original image and its variations.",
+        "History persists across page refreshes (at minimum via frontend local persistence; backend persistence may be added if size limits allow)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/historyStorage.ts",
+          "operation": "create",
+          "description": "Implement lightweight frontend persistence (e.g., localStorage/IndexedDB) for submissions: original image reference (data URL or stored blob key), variation image references, and timestamps, with safe size-aware limits and basic migration/versioning."
+        },
+        {
+          "path": "frontend/src/views/History.tsx",
+          "operation": "create",
+          "description": "Create a History view that lists past submissions with thumbnail + created time and allows selecting an item to view original + variations. Use shadcn-ui Card/Button/Separator for list layout; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/HistoryDetail.tsx",
+          "operation": "create",
+          "description": "Create the detail panel for a selected history item showing the original image and variation gallery, reusing VariationGrid and the larger-view dialog. Use shadcn-ui components for layout consistency; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/views/UploadAndGenerate.tsx",
+          "operation": "modify",
+          "description": "After successful generation, append the submission (original + variations + timestamp) into local history storage so it persists across refreshes."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the new History view into app navigation and ensure selecting history items is supported without introducing unrelated pages. Use shadcn-ui navigation elements where applicable; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Apply a coherent neon/chaos-couture visual theme consistently across landing, upload/generation, and history views with accessible contrast.",
+      "acceptanceCriteria": [
+        "Theme is consistently applied (colors, typography, spacing, buttons, cards).",
+        "Theme aligns with the brand vibe suggested by the provided Ko T T1c imagery (neon/chaos couture feel) without defaulting to a generic look.",
+        "All text remains readable with accessible contrast on both desktop and mobile."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styles and Tailwind base layers for a neon/chaos-couture theme: dark background, neon accents, readable typography for long-form manifesto text, and accessible contrast defaults across components."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend Tailwind theme tokens (colors/radii/shadows/animations) to support neon accent palette and consistent styling across views."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create a shared layout wrapper to enforce consistent spacing, background treatment, and typography across Landing, Upload/Generate, and History. Use shadcn-ui layout-friendly primitives (Card/Separator) as needed; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap all views in AppLayout and ensure theme consistency across navigation, surfaces, and text styles. Use shadcn-ui components consistently; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Include the provided Ko T T1c images as static branding elements and add required generated branding assets (icon/hero bg/favicon) served from frontend static assets.",
+      "acceptanceCriteria": [
+        "The two uploaded images are included in the frontend as static assets and used in the UI (at least one visible on the landing screen).",
+        "Images are served from the frontend static assets path (not fetched through the backend canister).",
+        "Layout remains responsive and does not cause overflow or unreadable text."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/branding/1770656359337.png",
+          "operation": "create",
+          "description": "Add the user-provided Ko T T1c branding image as a static frontend asset for use in the UI."
+        },
+        {
+          "path": "frontend/public/assets/branding/1770656359337-1.png",
+          "operation": "create",
+          "description": "Add the user-provided Ko T T1c branding image as a static frontend asset for use in the UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/ko-tt1c-app-icon.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the required generated image asset: Neon couture-style app icon on dark background (ko-tt1c-app-icon.dim_512x512.png)."
+        },
+        {
+          "path": "frontend/public/assets/generated/ko-tt1c-hero-bg.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the required generated image asset: Neon couture-style wide hero background with abstract light leaks and subtle flame motifs (ko-tt1c-hero-bg.dim_1600x900.png)."
+        },
+        {
+          "path": "frontend/public/assets/generated/ko-tt1c-favicon.dim_64x64.png",
+          "operation": "create",
+          "description": "Add the required generated image asset: Minimal neon mark/favicon variant on dark background (ko-tt1c-favicon.dim_64x64.png)."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Wire the generated favicon asset (frontend/public/assets/generated/ko-tt1c-favicon.dim_64x64.png) into the document head so it is served as a static asset."
+        },
+        {
+          "path": "frontend/src/views/LandingIntro.tsx",
+          "operation": "modify",
+          "description": "Place at least one of the static branding images (frontend/public/assets/branding/1770656359337.png and/or frontend/public/assets/branding/1770656359337-1.png) visibly on the landing screen and use the generated hero background (frontend/public/assets/generated/ko-tt1c-hero-bg.dim_1600x900.png) as a brand element while keeping layout responsive."
+        },
+        {
+          "path": "frontend/src/components/TopNav.tsx",
+          "operation": "modify",
+          "description": "Add a small brand mark usage (e.g., icon/wordmark display) using static assets so branding is present across views without backend image routing. Use shadcn-ui components for consistent nav styling; verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}
