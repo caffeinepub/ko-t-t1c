@@ -7,14 +7,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ImageFilePicker from '@/components/ImageFilePicker';
 import VariationGrid from '@/components/VariationGrid';
 import HiddenVariationsPanel from '@/components/HiddenVariationsPanel';
-import { generateVariations } from '@/lib/onDeviceVariations';
+import { generateFusionVariations } from '@/lib/onDeviceVariations';
 import { addToHistory } from '@/lib/historyStorage';
-import { Loader2, Sparkles } from 'lucide-react';
+import { Loader2, Sparkles, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import type { VariationItem } from '@/lib/variationState';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function UploadAndGenerate() {
-  const [selectedImage, setSelectedImage] = useState<{
+  const [photoA, setPhotoA] = useState<{
+    file: File;
+    preview: string;
+    metadata: { width: number; height: number; size: number };
+  } | null>(null);
+  const [photoB, setPhotoB] = useState<{
     file: File;
     preview: string;
     metadata: { width: number; height: number; size: number };
@@ -24,33 +30,46 @@ export default function UploadAndGenerate() {
   const [variations, setVariations] = useState<VariationItem[]>([]);
   const [hiddenVariations, setHiddenVariations] = useState<VariationItem[]>([]);
 
-  const handleImageSelect = (file: File, preview: string, metadata: { width: number; height: number; size: number }) => {
-    setSelectedImage({ file, preview, metadata });
+  const handlePhotoASelect = (file: File, preview: string, metadata: { width: number; height: number; size: number }) => {
+    setPhotoA({ file, preview, metadata });
     setVariations([]);
     setHiddenVariations([]);
   };
 
-  const handleRemoveImage = () => {
-    setSelectedImage(null);
+  const handlePhotoBSelect = (file: File, preview: string, metadata: { width: number; height: number; size: number }) => {
+    setPhotoB({ file, preview, metadata });
+    setVariations([]);
+    setHiddenVariations([]);
+  };
+
+  const handleRemovePhotoA = () => {
+    setPhotoA(null);
+    setVariations([]);
+    setHiddenVariations([]);
+  };
+
+  const handleRemovePhotoB = () => {
+    setPhotoB(null);
     setVariations([]);
     setHiddenVariations([]);
   };
 
   const handleGenerate = async () => {
-    if (!selectedImage) return;
+    if (!photoA || !photoB) return;
 
     setIsGenerating(true);
     try {
-      const generated = await generateVariations(selectedImage.preview, variationCount);
+      const generated = await generateFusionVariations(photoA.preview, photoB.preview, variationCount);
       setVariations(generated);
 
       // Save to history
-      await addToHistory(selectedImage.preview, generated.map((v) => v.imageUrl));
+      await addToHistory(photoA.preview, photoB.preview, generated.map((v) => v.imageUrl));
 
-      toast.success(`Generated ${generated.length} variations!`);
+      toast.success(`Generated ${generated.length} fusion outputs!`);
     } catch (error) {
       console.error('Generation error:', error);
-      toast.error('Failed to generate variations. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate fusion outputs. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setIsGenerating(false);
     }
@@ -61,7 +80,7 @@ export default function UploadAndGenerate() {
     if (variation) {
       setVariations((prev) => prev.filter((v) => v.id !== id));
       setHiddenVariations((prev) => [...prev, variation]);
-      toast.info('Variation hidden');
+      toast.info('Fusion output hidden');
     }
   };
 
@@ -70,35 +89,38 @@ export default function UploadAndGenerate() {
     if (variation) {
       setHiddenVariations((prev) => prev.filter((v) => v.id !== id));
       setVariations((prev) => [...prev, variation]);
-      toast.success('Variation restored');
+      toast.success('Fusion output restored');
     }
   };
 
   const handleRegenerateVariation = async (id: string) => {
-    if (!selectedImage) return;
+    if (!photoA || !photoB) return;
 
     const variation = hiddenVariations.find((v) => v.id === id);
     if (!variation) return;
 
     setIsGenerating(true);
     try {
-      // Generate a single replacement with a different preset
-      const usedPresets = [...variations, ...hiddenVariations].map((v) => v.presetId);
-      const newVariations = await generateVariations(selectedImage.preview, 1, usedPresets);
+      // Generate a single replacement with a different seed
+      const usedSeeds = [...variations, ...hiddenVariations].map((v) => v.presetId);
+      const newVariations = await generateFusionVariations(photoA.preview, photoB.preview, 1, usedSeeds);
 
       if (newVariations.length > 0) {
         // Remove the hidden variation and add the new one to visible
         setHiddenVariations((prev) => prev.filter((v) => v.id !== id));
         setVariations((prev) => [...prev, newVariations[0]]);
-        toast.success('New variation generated!');
+        toast.success('New fusion output generated!');
       }
     } catch (error) {
       console.error('Regeneration error:', error);
-      toast.error('Failed to regenerate. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to regenerate. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setIsGenerating(false);
     }
   };
+
+  const canGenerate = photoA && photoB && !isGenerating;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -106,39 +128,59 @@ export default function UploadAndGenerate() {
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-neon-pink via-neon-purple to-neon-cyan bg-clip-text text-transparent">
-            Create Your Variations
+            Photo Fusion Studio
           </h1>
-          <p className="text-muted-foreground">
-            Upload your photo and generate realistic variations with different styles and backgrounds
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Combine two photos into one new image. Each fusion merges visual elements from both Photo A and Photo B to create unique artistic composites.
           </p>
         </div>
 
         {/* Upload Section */}
-        <Card className="border-neon-pink/20 bg-card/50 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle>Upload Photo</CardTitle>
-            <CardDescription>Select a JPG or PNG image (max 10MB)</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ImageFilePicker
-              onImageSelect={handleImageSelect}
-              onRemove={handleRemoveImage}
-              selectedImage={selectedImage}
-            />
-          </CardContent>
-        </Card>
+        <div className="grid gap-6 md:grid-cols-2">
+          <Card className="border-neon-pink/20 bg-card/50 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle>Photo A</CardTitle>
+              <CardDescription>First source image for fusion (JPG or PNG, max 10MB)</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ImageFilePicker
+                onImageSelect={handlePhotoASelect}
+                onRemove={handleRemovePhotoA}
+                selectedImage={photoA}
+                label="Photo A"
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="border-neon-cyan/20 bg-card/50 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle>Photo B</CardTitle>
+              <CardDescription>Second source image for fusion (JPG or PNG, max 10MB)</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ImageFilePicker
+                onImageSelect={handlePhotoBSelect}
+                onRemove={handleRemovePhotoB}
+                selectedImage={photoB}
+                label="Photo B"
+              />
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Generation Controls */}
-        {selectedImage && (
+        {(photoA || photoB) && (
           <Card className="border-neon-purple/20 bg-card/50 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle>Generation Settings</CardTitle>
-              <CardDescription>Configure how many variations to create</CardDescription>
+              <CardTitle>Fusion Settings</CardTitle>
+              <CardDescription>
+                Each fusion output combines regions from both photos using different blending techniques
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="variation-count">Number of Variations: {variationCount}</Label>
+                  <Label htmlFor="variation-count">Number of Fusion Outputs: {variationCount}</Label>
                 </div>
                 <Slider
                   id="variation-count"
@@ -152,21 +194,34 @@ export default function UploadAndGenerate() {
                 />
               </div>
 
+              {!canGenerate && !isGenerating && (
+                <Alert>
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    {!photoA && !photoB
+                      ? 'Please upload both Photo A and Photo B to begin fusion generation'
+                      : !photoA
+                      ? 'Please upload Photo A to complete the pair'
+                      : 'Please upload Photo B to complete the pair'}
+                  </AlertDescription>
+                </Alert>
+              )}
+
               <Button
                 onClick={handleGenerate}
-                disabled={isGenerating || !selectedImage}
+                disabled={!canGenerate}
                 size="lg"
                 className="w-full gap-2 neon-glow"
               >
                 {isGenerating ? (
                   <>
                     <Loader2 className="h-5 w-5 animate-spin" />
-                    Generating...
+                    Fusing Photos...
                   </>
                 ) : (
                   <>
                     <Sparkles className="h-5 w-5" />
-                    Generate Variations
+                    Fuse Photos Together
                   </>
                 )}
               </Button>
@@ -179,7 +234,7 @@ export default function UploadAndGenerate() {
           <Tabs defaultValue="visible" className="w-full">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
               <TabsTrigger value="visible">
-                Variations ({variations.length})
+                Fusion Outputs ({variations.length})
               </TabsTrigger>
               <TabsTrigger value="hidden">
                 Hidden ({hiddenVariations.length})
@@ -192,7 +247,7 @@ export default function UploadAndGenerate() {
               ) : (
                 <Card className="border-dashed">
                   <CardContent className="flex items-center justify-center py-12">
-                    <p className="text-muted-foreground">No visible variations. Check the Hidden tab.</p>
+                    <p className="text-muted-foreground">No visible fusion outputs. Check the Hidden tab.</p>
                   </CardContent>
                 </Card>
               )}

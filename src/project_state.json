@@ -1,13 +1,19 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
-  "summary": "Ko T T1c: an app where users upload a photo and receive high-quality, realistic image variations that preserve the original person/identity while changing elements like outfit and background; app includes a full branded introduction/manifesto and tagline.",
+  "projectStateVersion": 11,
+  "summary": "Ko T T1c: an app where users upload photo(s) and receive high-quality, realistic image outputs; pivot requested from single-photo semantic outfit/background variations to a two-photo \"fusion/collision\" workflow that blends two photographs into a new variation while preserving quality and brand intro/manifesto experience.",
   "architectural_notes": [
-    "Image generation must preserve the subject identity from the uploaded photo while modifying only allowed attributes (e.g., outfit/background) in a realistic style."
+    "Image generation must preserve the subject identity from the uploaded photo while modifying only allowed attributes (e.g., outfit/background) in a realistic style.",
+    "Landing/intro experience must display the newly provided introduction letter text (Subject: “Strength in Numbers (and a Weakness in Yours)” through the closing Ko T T1C tagline) in full at the top of the page, exactly as written (including the Louis Vuitton URL).",
+    "Generated variations should include substantive styling/wardrobe changes (e.g., outfit type/shape and color) rather than simple image adjustments (hue/contrast).",
+    "Support a two-photo input pipeline (upload/preview two images) for a \"fusion/collision\" generation mode that blends the photos into a new output rather than applying simple global edits.",
+    "“Fusion/collision” must follow the common meaning of fusing two inputs into one blended/combined output derived from BOTH photos (not a single-photo edit mislabeled as fusion)."
   ],
-  "known_issues": [],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Neon couture-style app icon on dark background (ko-tt1c-app-icon.dim_512x512.png)\n- Neon couture-style wide hero background with abstract light leaks and subtle flame motifs (ko-tt1c-hero-bg.dim_1600x900.png)\n- Minimal neon mark/favicon variant on dark background (ko-tt1c-favicon.dim_64x64.png)",
+  "known_issues": [
+    "User feedback: current variations may resemble simple edits (hue/contrast) rather than true outfit/style changes; needs improvement to meet 'actual variations' expectation.",
+    "Reported behavior: generator produces no meaningful variation (output remains essentially identical aside from temperature/color shift), failing the expected variation behavior."
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-create-a-landing-intro-experience-for-ko-t-t1c-the-chaos-that-finally-makes-sense-that-displays-the-full-provided-introduction-manifesto-text-and-the-provided-tagline-exactly-as-written-in-english-within-the-app-ui",
@@ -64,6 +70,102 @@
         "REQ-7"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-landing-intro-page-to-display-the-user-provided-introduction-letter-in-full-in-english-at-the-very-top-of-the-page-content-above-the-existing-manifesto-content-preserving-the-wording-punctuation-and-paragraph-line-breaks-as-provided-the-text-must-include-the-subject-strength-in-numbers-and-a-weakness-in-yours-line-and-the-dear-louis-vuitton-https-www-louisvuitton-com-line",
+      "title": "Update the landing/intro page to display the user-provided introduction letter in full, in English, at the very top of the page content (above the existing manifesto content), preserving the wording, punctuation, and paragraph/line breaks as provided. The text must include the “Subject: Strength in Numbers (and a Weakness in Yours)” line and the “Dear Louis Vuitton (https://www.louisvuitton.com),” line.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-on-device-variation-generator-so-that-generated-results-are-meaningful-visually-distinct-variations-e-g-different-outfit-colors-and-different-outfit-shapes-such-as-shorts-to-dress-like-silhouettes-rather-than-primarily-global-hue-contrast-brightness-edits",
+      "title": "Update the on-device variation generator so that generated results are meaningful, visually distinct variations (e.g., different outfit colors and different outfit shapes such as shorts-to-dress-like silhouettes) rather than primarily global hue/contrast/brightness edits.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-variation-preset-system-to-support-semantic-style-variation-types-e-g-outfit-recolor-garment-pattern-overlay-garment-silhouette-warp-background-swap-scene-styling-and-ensure-the-generator-can-pick-from-these-types-when-creating-variations-and-when-regenerating-a-hidden-bad-variation",
+      "title": "Extend the variation preset system to support “semantic-style” variation types (e.g., outfit recolor, garment pattern overlay, garment silhouette warp, background swap/scene styling) and ensure the generator can pick from these types when creating variations and when regenerating a hidden/bad variation.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-generation-ui-copy-in-the-upload-generate-view-to-set-user-expectations-that-variations-aim-for-outfit-style-changes-color-and-shape-rather-than-simple-photo-edits-using-english-user-facing-text",
+      "title": "Update the generation UI copy in the Upload/Generate view to set user expectations that variations aim for outfit/style changes (color and shape) rather than simple photo edits, using English user-facing text.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-upload-generate-experience-to-support-selecting-and-previewing-two-input-photos-photo-a-and-photo-b-before-generation-including-the-ability-to-remove-replace-either-photo-and-disable-generation-until-both-photos-are-provided",
+      "title": "Update the Upload/Generate experience to support selecting and previewing TWO input photos (Photo A and Photo B) before generation, including the ability to remove/replace either photo, and disable generation until both photos are provided.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-single-photo-variation-generation-pipeline-with-an-on-device-two-photo-fusion-collision-generator-that-produces-outputs-derived-from-both-input-photos-avoiding-results-that-are-effectively-identical-to-one-input-with-only-minor-temperature-color-shifts",
+      "title": "Replace the current single-photo variation generation pipeline with an on-device two-photo “fusion/collision” generator that produces outputs derived from BOTH input photos, avoiding results that are effectively identical to one input with only minor temperature/color shifts.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-results-management-ux-grid-hide-and-regenerate-replacement-to-work-with-fusion-outputs-ensuring-that-regenerating-a-hidden-bad-result-generates-a-new-fusion-output-based-on-the-same-two-input-photos-and-does-not-revert-to-single-photo-presets",
+      "title": "Update the results management UX (grid, hide, and regenerate replacement) to work with fusion outputs, ensuring that regenerating a hidden/bad result generates a new fusion output based on the same two input photos (and does not revert to single-photo presets).",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-history-persistence-and-history-display-to-store-and-show-both-fusion-input-photos-photo-a-and-photo-b-alongside-the-generated-outputs-including-backward-compatibility-for-existing-single-photo-history-entries",
+      "title": "Update history persistence and history display to store and show both fusion input photos (Photo A and Photo B) alongside the generated outputs, including backward compatibility for existing single-photo history entries.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-all-user-facing-copy-in-the-upload-generate-page-to-describe-the-new-two-photo-fusion-workflow-in-english-remove-replace-references-to-outfit-variations-generated-from-a-single-photo-where-they-no-longer-apply",
+      "title": "Update all user-facing copy in the Upload/Generate page to describe the new two-photo fusion workflow in English (remove/replace references to ‘outfit variations’ generated from a single photo where they no longer apply).",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-on-device-fusion-generator-so-outputs-are-true-fusions-derived-from-both-photo-a-and-photo-b-a-combined-composite-collage-merge-not-primarily-global-color-adjustments-or-a-simple-uniform-overlay-ensure-the-generator-frequently-exchanges-merges-localized-structures-textures-between-the-two-inputs-e-g-patch-based-region-mixing-edge-aware-blending-so-the-result-visibly-contains-meaningful-elements-from-each-input",
+      "title": "Update the on-device fusion generator so outputs are true fusions derived from BOTH Photo A and Photo B (a combined composite/collage/merge), not primarily global color adjustments or a simple uniform overlay; ensure the generator frequently exchanges/merges localized structures/textures between the two inputs (e.g., patch-based region mixing + edge-aware blending) so the result visibly contains meaningful elements from each input.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-on-device-both-inputs-contribution-guard-to-detect-and-prevent-outputs-that-are-effectively-identical-to-just-photo-a-or-just-photo-b-aside-from-minor-global-color-contrast-changes-when-detected-automatically-retry-with-a-different-fusion-recipe-seed-until-a-maximum-retry-count-is-reached-then-show-a-clear-english-error-message-if-it-cannot-produce-a-valid-fusion",
+      "title": "Add an on-device “both-inputs” contribution guard to detect and prevent outputs that are effectively identical to just Photo A or just Photo B (aside from minor global color/contrast changes); when detected, automatically retry with a different fusion recipe/seed until a maximum retry count is reached, then show a clear English error message if it cannot produce a valid fusion.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-upload-generate-page-user-facing-copy-to-define-fusion-in-plain-english-as-a-combined-result-derived-from-both-photos-not-a-filter-and-align-button-section-descriptions-accordingly-without-introducing-new-workflow-steps",
+      "title": "Update Upload/Generate page user-facing copy to define “fusion” in plain English as a combined result derived from BOTH photos (not a filter), and align button/section descriptions accordingly without introducing new workflow steps.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -88,6 +190,18 @@
     {
       "id": "AR-4",
       "summary": "Include the provided full introduction/manifesto text and tagline in the app experience",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Ensure generated 'variations' are meaningful semantic changes (e.g., different outfit colors/styles/shapes such as shorts→dress), not mere photo edits like hue/contrast adjustments",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Replace/augment single-photo variations with a two-photo \"fusion\" mode: user uploads two photos to be collided/blended into a new variation output",
       "reqIds": [],
       "status": "pending"
     }

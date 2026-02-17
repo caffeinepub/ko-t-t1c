@@ -1,7 +1,6 @@
 import { useRef, ChangeEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { getImageMetadata } from '@/lib/imageMeta';
@@ -17,9 +16,10 @@ interface ImageFilePickerProps {
     preview: string;
     metadata: { width: number; height: number; size: number };
   } | null;
+  label?: string;
 }
 
-export default function ImageFilePicker({ onImageSelect, onRemove, selectedImage }: ImageFilePickerProps) {
+export default function ImageFilePicker({ onImageSelect, onRemove, selectedImage, label }: ImageFilePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +43,7 @@ export default function ImageFilePicker({ onImageSelect, onRemove, selectedImage
       const metadata = await getImageMetadata(file);
 
       onImageSelect(file, preview, metadata);
-      toast.success('Image loaded successfully');
+      toast.success(`${label || 'Image'} loaded successfully`);
     } catch (error) {
       console.error('Error loading image:', error);
       toast.error('Failed to load image. Please try another file.');
@@ -60,19 +60,23 @@ export default function ImageFilePicker({ onImageSelect, onRemove, selectedImage
     }
   };
 
+  const ariaLabel = label ? `Upload ${label}` : 'Upload image';
+
   return (
     <div className="space-y-4">
       {!selectedImage ? (
         <div
           className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer transition-colors hover:border-neon-pink/50 hover:bg-accent/5"
           onClick={() => inputRef.current?.click()}
+          role="button"
+          aria-label={ariaLabel}
         >
           <div className="flex flex-col items-center gap-4">
             <div className="rounded-full bg-accent/10 p-4">
               <Upload className="h-8 w-8 text-muted-foreground" />
             </div>
             <div className="space-y-2">
-              <p className="text-lg font-medium">Click to upload an image</p>
+              <p className="text-lg font-medium">Click to upload {label || 'an image'}</p>
               <p className="text-sm text-muted-foreground">JPG or PNG, max 10MB</p>
             </div>
           </div>
@@ -82,6 +86,7 @@ export default function ImageFilePicker({ onImageSelect, onRemove, selectedImage
             accept="image/jpeg,image/png"
             onChange={handleFileChange}
             className="hidden"
+            aria-label={ariaLabel}
           />
         </div>
       ) : (
@@ -90,7 +95,7 @@ export default function ImageFilePicker({ onImageSelect, onRemove, selectedImage
             <div className="relative">
               <img
                 src={selectedImage.preview}
-                alt="Selected"
+                alt={label ? `Selected ${label}` : 'Selected'}
                 className="w-full h-auto max-h-96 object-contain bg-muted"
               />
               <Button
@@ -98,6 +103,7 @@ export default function ImageFilePicker({ onImageSelect, onRemove, selectedImage
                 size="icon"
                 className="absolute top-2 right-2"
                 onClick={handleRemove}
+                aria-label={`Remove ${label || 'image'}`}
               >
                 <X className="h-4 w-4" />
               </Button>

@@ -1,155 +1,75 @@
 {
   "kind": "build_request",
-  "title": "Ko T T1c photo upload + realistic variation gallery with manifesto intro",
-  "projectName": "Ko T T1c",
+  "title": "Make fusion outputs behave like true two-image fusions (not just color/overlay edits)",
+  "projectName": "Ko T T1c!",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-1",
-      "text": "Create a landing/intro experience for “Ko T T1C — The Chaos That Finally Makes Sense” that displays the full provided introduction/manifesto text and the provided tagline exactly as written, in English, within the app UI.",
+      "id": "REQ-17",
+      "text": "Update the on-device fusion generator so outputs are true fusions derived from BOTH Photo A and Photo B (a combined composite/collage/merge), not primarily global color adjustments or a simple uniform overlay; ensure the generator frequently exchanges/merges localized structures/textures between the two inputs (e.g., patch-based region mixing + edge-aware blending) so the result visibly contains meaningful elements from each input.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-3"
         ],
         "quotes": [
-          "it's going to have this introduction in full: Ko T T1C — The Chaos That Finally Makes Sense ... Tagline:\nKo T T1C — Chaotic day. Common‑sense drip. Believe in yourself when nobody’s passing you the baton."
+          "Do you know what a fusion is why don't you look it up and that's what I want"
         ]
       },
       "acceptanceCriteria": [
-        "The landing/intro screen shows the title “Ko T T1C — The Chaos That Finally Makes Sense”.",
-        "The full manifesto text is present (not truncated) and readable on mobile and desktop.",
-        "The tagline text appears exactly as provided.",
-        "The Louis Vuitton URL (https://www.louisvuitton.com) appears correctly in the rendered text."
+        "Generating fusion outputs produces images where both Photo A and Photo B are visibly represented (not just a tint/temperature shift of one photo).",
+        "At least one fusion technique used by the generator performs localized region mixing (not a full-frame uniform blend) and uses edge-aware blending/feathering to avoid harsh seams.",
+        "The fusion pipeline reduces reliance on global hue rotation/saturation/noise as the primary differentiator between outputs."
       ]
     },
     {
-      "id": "REQ-2",
-      "text": "Implement a photo submission flow where a user can upload a single photo (JPG/PNG) and preview it before generating variations.",
+      "id": "REQ-18",
+      "text": "Add an on-device “both-inputs” contribution guard to detect and prevent outputs that are effectively identical to just Photo A or just Photo B (aside from minor global color/contrast changes); when detected, automatically retry with a different fusion recipe/seed until a maximum retry count is reached, then show a clear English error message if it cannot produce a valid fusion.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-3"
         ],
         "quotes": [
-          "It's an app where people can submit a photo"
+          "Do you know what a fusion is why don't you look it up and that's what I want"
         ]
       },
       "acceptanceCriteria": [
-        "User can select a JPG/PNG file from their device.",
-        "The selected image renders as a preview with filename and basic info (e.g., dimensions/size if available).",
-        "The UI validates file type and enforces a clear max file size limit with a user-friendly error message when exceeded.",
-        "User can remove/replace the selected photo before generating."
+        "If a generated output is too similar to either input image, the app automatically retries generation rather than returning the near-duplicate result.",
+        "After exhausting retries, the user sees an English error explaining that the app could not produce a valid fusion from the chosen photos and suggesting trying different photos.",
+        "Regenerating a hidden output also uses the contribution guard and does not return near-duplicates of either input."
       ]
     },
     {
-      "id": "REQ-3",
-      "text": "Generate multiple “variations” from the uploaded photo that preserve the original person/identity (i.e., do not alter facial features/body identity) while varying only background and/or overall styling in a realistic, high-quality manner using an on-device image processing pipeline (no external AI services).",
+      "id": "REQ-19",
+      "text": "Update Upload/Generate page user-facing copy to define “fusion” in plain English as a combined result derived from BOTH photos (not a filter), and align button/section descriptions accordingly without introducing new workflow steps.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-3"
         ],
         "quotes": [
-          "it will always stay true to their upload though so like it will keep the same model like whatever person is in their photograph",
-          "give variations on the outfit or the background and always within a realistic manner very quality work not sloppy and third leg type stuff"
+          "Do you know what a fusion is why don't you look it up and that's what I want"
         ]
       },
       "acceptanceCriteria": [
-        "The app can produce a configurable number of variations (minimum 4) from one uploaded image.",
-        "Variations keep the original photo’s subject unchanged (no face/body warping; no added limbs).",
-        "Variations change background and/or photographic styling (e.g., color grade, lighting, depth-of-field effects) while keeping output realistic and non-cartoonish.",
-        "Each generated variation is displayed as an image the user can open in a larger view and download."
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Add a “quality guard” UX for outputs: allow the user to flag a generated variation as “bad/distorted,” hide it from the main grid, and regenerate a replacement variation using a different preset.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "very quality work not sloppy and third leg type stuff"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Each variation card includes an action to mark it as bad/hidden.",
-        "Hidden variations are not shown in the default grid but can be viewed/restored from a “Hidden” section.",
-        "User can regenerate a replacement variation for a hidden/bad item.",
-        "Regeneration produces a different preset result than the hidden item (not a duplicate)."
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Persist a lightweight history of user submissions (original + generated variations + timestamps) so a user can revisit previous sessions from within the app.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "It's an app where people can submit a photo and it will give them variations"
-        ]
-      },
-      "acceptanceCriteria": [
-        "A “History” view lists prior submissions with a thumbnail and created time.",
-        "Selecting a history item shows the original image and its variations.",
-        "History persists across page refreshes (at minimum via frontend local persistence; backend persistence may be added if size limits allow)."
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Choose and apply a coherent visual theme for Ko T T1c and enforce it consistently across the landing, upload, generation, and history views.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Theme is consistently applied (colors, typography, spacing, buttons, cards).",
-        "Theme aligns with the brand vibe suggested by the provided Ko T T1c imagery (neon/chaos couture feel) without defaulting to a generic look.",
-        "All text remains readable with accessible contrast on both desktop and mobile."
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Add static branding imagery to the UI by including the user-provided Ko T T1c images as visible brand elements (e.g., hero/cover and/or logo placement) without requiring backend image routing.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "The user has uploaded 2 image(s): 1770656359337.png, 1770656359337-1.png."
-        ]
-      },
-      "acceptanceCriteria": [
-        "The two uploaded images are included in the frontend as static assets and used in the UI (at least one visible on the landing screen).",
-        "Images are served from the frontend static assets path (not fetched through the backend canister).",
-        "Layout remains responsive and does not cause overflow or unreadable text."
+        "The Upload/Generate page describes fusion as combining/merging two photos into one new output and explicitly indicates both photos contribute.",
+        "All updated copy is in English and does not reference single-photo variation generation."
       ]
     }
   ],
   "constraints": [
-    "Do not use or integrate external AI/LLM/image-generation services (no OpenAI/Anthropic/third-party AI APIs).",
-    "Backend must remain a single Motoko actor (all logic in backend main actor).",
-    "Do not modify frontend files under the immutable paths listed in SYSTEM_CONTEXT (compose read-only UI components instead).",
-    "Use English for any user-facing text."
+    "Frontend immutable paths must not be edited: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, and all files under frontend/src/components/ui.",
+    "No external AI services or external backends; fusion must remain fully on-device in the browser.",
+    "Respect the existing single-actor Motoko backend architecture; do not introduce additional backend services."
   ],
   "nonGoals": [
-    "Implementing true AI identity-preserving outfit generation (photorealistic wardrobe changes) via external model inference.",
-    "Third-party authentication providers (use Internet Identity only if authentication is later requested).",
-    "Real-time collaboration or chat features."
+    "Adding a new third photo input or multi-image (3+) fusion.",
+    "Adding real-time collaboration, chat, or any websocket-based features.",
+    "Introducing external image generation APIs or cloud processing."
   ],
   "imageRequirements": {
-    "required": [
-      "Neon couture-style app icon on dark background (ko-tt1c-app-icon.dim_512x512.png)",
-      "Neon couture-style wide hero background with abstract light leaks and subtle flame motifs (ko-tt1c-hero-bg.dim_1600x900.png)",
-      "Minimal neon mark/favicon variant on dark background (ko-tt1c-favicon.dim_64x64.png)"
-    ],
+    "required": [],
     "edits": []
   },
   "userProfileUpdate": {

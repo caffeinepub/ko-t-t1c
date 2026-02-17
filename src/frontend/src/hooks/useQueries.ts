@@ -20,9 +20,9 @@ export function useAddSubmission() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ originalText, variations }: { originalText: string; variations: string[] }) => {
+    mutationFn: async ({ photoA, photoB, variations }: { photoA: string; photoB: string; variations: string[] }) => {
       if (!actor) throw new Error('Actor not initialized');
-      return actor.addSubmission(originalText, variations);
+      return actor.addSubmission(photoA, photoB, variations);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['history'] });

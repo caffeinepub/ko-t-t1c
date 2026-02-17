@@ -20,7 +20,7 @@ export default function HiddenVariationsPanel({
     return (
       <Card className="border-dashed">
         <CardContent className="flex items-center justify-center py-12">
-          <p className="text-muted-foreground">No hidden variations</p>
+          <p className="text-muted-foreground">No hidden fusion outputs</p>
         </CardContent>
       </Card>
     );
@@ -34,7 +34,7 @@ export default function HiddenVariationsPanel({
             <div className="relative aspect-square overflow-hidden bg-muted">
               <img
                 src={variation.imageUrl}
-                alt={`Hidden variation ${variation.id}`}
+                alt={`Hidden fusion output ${variation.id}`}
                 className="h-full w-full object-cover grayscale"
               />
             </div>

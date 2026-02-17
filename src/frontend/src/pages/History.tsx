@@ -69,7 +69,7 @@ export default function History() {
             <h1 className="text-4xl font-bold bg-gradient-to-r from-neon-pink via-neon-purple to-neon-cyan bg-clip-text text-transparent">
               Your History
             </h1>
-            <p className="text-muted-foreground">View and revisit your previous creations</p>
+            <p className="text-muted-foreground">View and revisit your previous fusion creations</p>
           </div>
 
           {history.length > 0 && (
@@ -84,7 +84,7 @@ export default function History() {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Clear all history?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This will permanently delete all your saved submissions and variations. This action cannot be undone.
+                    This will permanently delete all your saved submissions and fusion outputs. This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -104,41 +104,49 @@ export default function History() {
               <div className="text-center space-y-2">
                 <p className="text-xl font-semibold">No history yet</p>
                 <p className="text-muted-foreground">
-                  Your generated variations will appear here after you create them
+                  Your generated fusion outputs will appear here after you create them
                 </p>
               </div>
             </CardContent>
           </Card>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {history.map((entry) => (
-              <Card
-                key={entry.id}
-                className="group cursor-pointer transition-all hover:border-neon-pink/50 hover:shadow-lg hover:shadow-neon-pink/10"
-                onClick={() => setSelectedEntry(entry)}
-              >
-                <CardHeader className="p-0">
-                  <div className="aspect-video w-full overflow-hidden rounded-t-lg bg-muted">
-                    <img
-                      src={entry.originalImage}
-                      alt="Original"
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className="p-4 space-y-2">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span>{formatDate(entry.timestamp)}</span>
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">{entry.variations.length} variations</span>
-                    <span className="text-neon-cyan font-medium">View →</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            {history.map((entry) => {
+              // Determine preview image (prefer photoA for fusion entries, fallback to originalImage for legacy)
+              const previewImage = entry.photoA || entry.originalImage;
+              const isFusion = !!(entry.photoA && entry.photoB);
+              
+              return (
+                <Card
+                  key={entry.id}
+                  className="group cursor-pointer transition-all hover:border-neon-pink/50 hover:shadow-lg hover:shadow-neon-pink/10"
+                  onClick={() => setSelectedEntry(entry)}
+                >
+                  <CardHeader className="p-0">
+                    <div className="aspect-video w-full overflow-hidden rounded-t-lg bg-muted">
+                      <img
+                        src={previewImage}
+                        alt={isFusion ? 'Fusion preview' : 'Original'}
+                        className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                      />
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-4 space-y-2">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span>{formatDate(entry.timestamp)}</span>
+                    </div>
+                    <Separator />
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">
+                        {isFusion ? `${entry.variations.length} fusion outputs` : `${entry.variations.length} variations`}
+                      </span>
+                      <span className="text-neon-cyan font-medium">View →</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         )}
       </div>

@@ -22,7 +22,7 @@ export default function VariationGrid({ variations, onHide }: VariationGridProps
   const handleDownload = (variation: VariationItem) => {
     const link = document.createElement('a');
     link.href = variation.imageUrl;
-    link.download = `ko-tt1c-variation-${variation.id}.png`;
+    link.download = `ko-tt1c-fusion-${variation.id}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -40,7 +40,7 @@ export default function VariationGrid({ variations, onHide }: VariationGridProps
               <div className="relative aspect-square overflow-hidden bg-muted">
                 <img
                   src={variation.imageUrl}
-                  alt={`Variation ${variation.id}`}
+                  alt={`Fusion output ${variation.id}`}
                   className="h-full w-full object-cover transition-transform group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
@@ -76,14 +76,14 @@ export default function VariationGrid({ variations, onHide }: VariationGridProps
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => onHide(variation.id)}>
                         <EyeOff className="mr-2 h-4 w-4" />
-                        Hide Variation
+                        Hide Output
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
               </div>
 
-              {/* Preset Label */}
+              {/* Recipe Label */}
               <div className="p-3 bg-card/50 backdrop-blur-sm">
                 <p className="text-xs text-muted-foreground truncate">{variation.presetName}</p>
               </div>
